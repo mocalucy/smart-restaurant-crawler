@@ -1,174 +1,59 @@
-# README
-## Introduction
-![Packagist Stars (custom server)](https://img.shields.io/packagist/stars/BillyNI-OUO/smart-gym-crawler)![GitHub top language](https://img.shields.io/github/languages/top/BillyNI-OUO/smart-gym-crawler)![](https://img.shields.io/badge/python-3.8-informational)![](https://img.shields.io/badge/made%20by-billy-brightgreen)
-## 目前架構
-```
-src 
- |-crawler
-   |-query.py
-   |-decode.py
-   |-place.py
-   |-review.py
-   |-coordinate.py
-   |-grid.py
- |-sql
-   |-connector.py
- |-constants.py
+🗽 Smart Restaurant Crawler (NYC Focus)
+This project is a web crawler designed to extract, process, and analyze restaurant data — specifically focused on New York City. It gathers location, name, and other metadata for restaurants and supports further analysis using natural language processing and geolocation mapping.
 
-coordinate
- |-台中.txt
- |-台南.txt
- |-台北.txt
- |-桃園.txt
- |-新竹.txt
- |-台灣.txt
+📂 Project Structure
+bash
+複製
+編輯
+smart-restaurant-crawler/
+├── coordinates/           # Location data for NYC restaurants
+├── model/                 # Model-related files (NLP or prediction)
+├── rating/                # Scripts for handling restaurant ratings
+├── src/                   # Core crawler logic and pipeline
+├── buisness.json          # Output file storing extracted restaurant data
+├── buisness.py            # Processes raw business data
+├── inference.py           # Performs predictions or classifications
+├── main.py                # Main crawler entry point
+├── utils.py               # Helper functions
+🚀 How to Use
+1. Clone the repository
+bash
+複製
+編輯
+git clone https://github.com/mocalucy/smart-restaurant-crawler.git
+cd smart-restaurant-crawler
+2. Install dependencies
+bash
+複製
+編輯
+pip install -r requirements.txt
+If requirements.txt is not provided, install common packages used in web crawling and NLP:
 
-model
- |-rating_model.h5
+bash
+複製
+編輯
+pip install requests beautifulsoup4 pandas spacy
+3. Run the crawler (NYC example)
+bash
+複製
+編輯
+python main.py --city "New York"
+The results will be saved to buisness.json.
 
-rating
- |-model.py
+🌟 Features
+Crawls restaurant listings in NYC
 
-main.py
-update.py
-update.sh
-text_classify.py
-utils.py
-inference.py
-feedbackupdate.py
+Extracts relevant metadata (name, address, category, etc.)
 
+Includes utilities for:
 
-```
-## 目前已完成的功能
-### Crawler
-1. *crawler.query* 搜尋經緯度附近的目標
-    a. *nearby2()* 爬目標的基本資料(非API方法)
-    - 以實作place_id, (cid_1, cid_2), name, formatted, 座標
-    
-    b. *reviews()* 根據爬到的(cid_1, cid_2)去爬評論(非API方法)
-    - text, review_id, rating, author_name, author_id, time
-    
-    c. *check_biusness()* 根據給定的cid去搜尋是否還有在營業
-    - 還可以用這個去做feedback 的 update(尚未實作)
+Geolocation mapping
 
-2. *crawler.decode* Decode非API方法(1.a, 1.b, 1.c)爬到的資料建立*Place*和*Review*物件
+Rating classification
 
-3. *Place*和*Review*實作物件的建立
+Keyword or tag extraction
 
-4. *grid* 給定範圍，網格式的去呼叫*crawler.query*的方法
+📝 Notes
+You may ignore unrelated files/folders if you're only using the restaurant crawler
 
-5. *coordinate* 讀/coordinate/裡的座標檔案
-    有分成兩種讀法，一種是讀特定城市檔案的座標，另一種是讀台灣所有城市中心的座標
- 
-### SQL
-1. *connector* 實作SQL的connector，以正確且安全的方式去操作SQL，以及許許多多會操作到sql的函式
-    a. *insert_place* 將place 正確的insert 到database中
-    b. *insert_review* 將revirew 正確的insert 到database中
-    c. *query_place(), query_review()* 搜尋place或review
-    d. *caculate_rating(), update_rating()* 為了更新平均分數和總評論數(早期寫法極其沒有效率，還請後來的人參考*update_user_rating_total()* 的寫法改善)
-    e. *get_lastId(), text_classify(), caculate_average()* 請參考資料更新SOP
-    f. *update_updateTime()* 紀錄上次更新資料庫的時間，為了優化算法
-### Constants
-存放會用到一些基本的參數，例如sql sever的ip, username....
-以及一些url的產生函式
-
-
----
-
-## TODO
-1. API方法的實作
-2. 改善*caculating_rating(), update_rating()* 的寫法
-3. 增加可以用cid來爬特定餐廳的方法(可以參考*check_buisness()* 基本上只差decode的部分)
-
----
-## Usage
-### Installation
-```python
-pip3 install requests
-pip3 install mysql-connector-python
-pip3 install numpy
-#我忘了還有用到甚麼，有跳出來的可以再補上
-```
-### 使用方式
-#### 更新資料庫
-注意一定要先把bert 打開，參考資料庫更新SOP，不然會卡住
-```python
-bash update.sh
-#會平行化的去執行update.py以及接著執行text_classify
-```
-#### 新增回報新餐廳
-還卡在確定餐廳的階段，未完全完成，feedbackupdate.py裡已完成找尋cid的部分，剩餘階段可以從check_buisness()裡參考如何爬特定餐廳的資訊
-
-#### 其餘使用方式
-參考main.py或下方example 去寫出想要實現的功能
-### Example
-都放在main.py裡面，可以參考看看
-
-搜尋台中某個座標格中的餐廳和評論並輸入到SQL Database中
-
-```python
-import src
-import src.crawler as crawler
-from src.sql.connector import connector
-
-#讀取台中的所有座標格，沒一個座標格由一組經位度組成 ex:(lat_range=(21.9, 22), lng_range=(120.8, 121))
-cor_list = crawler.coordinate.get_coordinate('./coordinates/台中.txt')
-#建立SQL的connector
-con = connector()
-#Initialize Database
-con.init_db()
-
-#這裡取第2個座標格，得到一串Place的list，你也可以用迴圈包起來，循序的執行
-l = crawler.grid.search_nearby2(cor_list[2][0], cor_list[2][1])
-
-#對list中所有的place
-for i in l:
-    print(i)
-    #看看有沒有成功insert到Database中
-    if con.insert_place(i):
-        #去爬出Place的評論，得到一串review的list
-        ll = crawler.query.reviews((i.cid_1, i.cid))
-        #insert review 到Database中
-        con.insert_reviews(ll)
-
-
-```
-用全台灣所有城市中心座標去搜尋
-```python
-import src
-import src.crawler as crawler
-from src.sql.connector import connector
-
-cor_list = crawler.coordinate.taiwan('./coordinates/台灣.txt')
-for cor in cor_list:
-	place_list = crawler.query.nearby2(location = cor)
-	for place in place_list:
-		if place == None:
-			break
-		if con.insert_place(place):
-			review_list = crawler.query.reviews((place.cid_1, place.cid))
-			con.insert_reviews(review_list)
-```
-更新評論並檢查還有沒有在營業
-```python
-import src
-import src.crawler as crawler
-from src.sql.connector import connector
-#從SQL中找出所有系統中的餐廳
-placeList = con.query_place(['cid_1', 'cid'])
-
-for place in placeList:
-	f#去檢查是否有營業
-	tag = crawler.query.check_business(place[1])
-	#更新SQL營業狀態
-	con.update_buisness(place[1], tag)
-    #去爬評論
-	reviewlist = crawler.query.reviews((0,place[1]))
-	for review in reviewList:
-		#比較出還沒在系統中的評論(不加這個判斷不影響結果，但可以大幅加快更新速度，差1.6倍
-		if datetime.strptime(review.time, "%Y-%m-%d %H:%M:%S") > lastupdate:
-			con.insert_review(review)
-```
-還有很多小功能，詳細內容可以看程式碼註解
-
-
+The project is built modularly to allow extension to other cities or domains
