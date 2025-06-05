@@ -1,12 +1,12 @@
-# 🗽 Smart Restaurant Crawler (NYC Focus)
+# 🗽 Smart Restaurant Crawler
 
-This project is a web crawler designed to extract, process, and analyze restaurant data — specifically focused on **New York City**. It gathers location, name, and other metadata for restaurants and supports further analysis using natural language processing and geolocation mapping.
+This project is a web crawler designed to extract, process, and analyze restaurant data. It gathers location, name, and other metadata for restaurants and supports further analysis using natural language processing and geolocation mapping.
 
 ## 📂 Project Structure
 
 ```
 smart-restaurant-crawler/
-├── coordinates/           # Location data for NYC restaurants
+├── coordinates/           # Location data restaurants
 ├── model/                 # Model-related files (NLP or prediction)
 ├── rating/                # Scripts for handling restaurant ratings
 ├── src/                   # Core crawler logic and pipeline
@@ -17,43 +17,24 @@ smart-restaurant-crawler/
 ├── utils.py               # Helper functions
 ```
 
-## 🚀 How to Use
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/mocalucy/smart-restaurant-crawler.git
-cd smart-restaurant-crawler
-```
-
-### 2. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-If `requirements.txt` is not provided, install common packages manually:
-
-```bash
-pip install requests beautifulsoup4 pandas spacy
-```
-
-### 3. Run the crawler (NYC example)
-
-```bash
-python main.py --city "New York"
-```
-
-The results will be saved to `buisness.json`.
-
 ## 🌟 Features
 
-- Crawls restaurant listings in NYC
+- Crawls restaurant listings
 - Extracts relevant metadata (name, address, category, etc.)
 - Includes utilities for:
   - Geolocation mapping
   - Rating classification
   - Keyword or tag extraction
+ 
+## 🌐 Demo (Frontend)
+
+A simple frontend prototype is available to visualize the result:
+
+👉 [smart-restaurant.github.io](https://smart-restaurant.github.io/#/)
+
+Click **"ENG"** and **"Nearby"** to browse the extracted restaurant data.
+
+> ⚠️ The frontend is not actively maintained and may not function perfectly — it's only intended as a demo to preview the data crawling results.
 
 ## 📝 Notes
 
