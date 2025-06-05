@@ -1,6 +1,6 @@
 # 🗽 Smart Restaurant Crawler
 
-This project is a web crawler designed to extract, process, and analyze restaurant data. It gathers location, name, and other metadata for restaurants and supports further analysis using natural language processing and geolocation mapping.
+This project is a web crawler designed to extract, process, and analyze restaurant data. It gathers location, name, and other metadata for restaurants and supports further analysis using natural language processing and geolocation mapping. This project is a full pipeline built with **Python**, combining **web crawling**, **natural language processing (NLP)**, **SQL-style data handling**, and **Google Map API integration**.
 
 ## 📂 Project Structure
 
@@ -34,7 +34,7 @@ A simple frontend prototype is available to visualize the result:
 
 Click **"ENG"** and **"Nearby"** to browse the extracted restaurant data.
 
-> ⚠️ The frontend is not actively maintained and may not function perfectly — it's only intended as a demo to preview the data crawling results.
+> ⚠️ The frontend is not actively maintained and may not function perfectly — it's only intended as a demo to preview the data crawling and prediction results.
 
 ## 📝 Notes
 
